@@ -1,0 +1,2 @@
+- Search per user
+- Zoomed search per user
