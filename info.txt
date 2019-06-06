@@ -1,0 +1,8 @@
+key information:
+
+4093 distinct users in 2018.
+
+least record: 1
+most records: 5917539 (including duplications and ita and Chinese)
+most records: 3027972 (after removal)
+

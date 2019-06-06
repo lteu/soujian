@@ -1,0 +1,240 @@
+%%%% ital-ia.tex
+
+\typeout{Ital-IA: Istruzioni di formattazione}
+
+% These are the instructions for authors for IJCAI-19.
+
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+\usepackage{ital-ia19}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+
+% Use the postscript times font!
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\urlstyle{same}
+
+
+\title{Assistente automatico di vocabolario per studenti stranieri}
+
+\author{
+    Tong Liu, Maurizio Gabbrielli
+    \affiliations
+    Universit\`a di Bologna
+    \emails
+    \{t.liu, maurizio.gabbrielli\}@unibo.it
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	In questo documento, si abbozza brevemente 
+	un'idea di un assistente automatico che è in 
+	grado di suggerire vocabolari agli studenti 
+	che usano la lingua italiana come seconda lingua.
+	In particolare, lo studio viene fatto
+	su un dizionario elettronico che ha raccolto le ricerche storiche di migliaia di utenti e milioni di ricerche di un anno.
+	Si valuterà la fattibilità che, dato un utente e le sue parole cercate,  il sistema possa suggerire le parole che l'utente potrebbe cercare in base alle ricerche di utenti simili.
+	Il sistema progettato che appoggia su Artificial Intelligence (AI) ha lo scopo di aumentare la produttività degli studenti che imparano la lingua grazie alle esperienze di ricerche degli studenti precedenti. 
+\end{abstract}
+
+\section{Introduzione}
+Quando si parla con uno straniero, \`e posbbile stimare il loro livello
+di lingua in base ai tipi di parole che loro non capiscono,
+ed a volte, si pu\`o anche predire le parole che a loro potrebbero interessare quando sappiamo che devono agire in certi contesti specifici. 
+Teoricamente, questo compito potrebbe essere realizzato con un sistema AI quale, in base alle ricerche storiche degli utenti di massa e le parole che un utente sta cercando, sarebbe in grado di suggerire altre parole rilevanti a questo utente.
+Questa funzione di raccomandazione potrebbe essere una soluzione innovativa per migliorare l'user experience (UX) legata all'utilizzo degli dizionari elettronici. È consapevole che è un lavoro stressante ricercare le parole ed espressioni in un dizionario ripetitivamente; la situazione peggiora ancora quando si legge un testo straniero con molte parole sconosciute. 
+Con l'aiuto del sistema di raccomandazione, l'utente potrebbe leggere in anticipo una lista di parole che potrebbe cercare e quindi risparmiare il tempo di digitare le parole ed agevolare efficientemente la lettura.
+
+\section{Dati di supporto}
+Il sistema di raccomandazione viene studiato su un piattaforma online di dizionario italiano-cinese chiamato Yihan. L'Yihan è disponibile in due versioni, una versione online~\cite{yihanwebsite} e una versione iOS scaricabile dall'Apple Store~\cite{yihanapp}. L'utente \`e identificabile con un ID univoco in entrambi i sistemi. Nel database, per ogni ricerca di parola, vengono registrati l'id utente, parola, data di ricerca e ripetizioni. La data di ricerca segna il giorno che l'utente ha effettuato la prima ricerca; il numero di ripetizioni registra il numero di volte che un utente ha cercato, e riflette quindi l'importanza di una parola per un utente. La Tab.~\ref{tab:esempiodata} mostra due esempi di record.
+
+\begin{table}
+\centering
+\begin{tabular}{lrrr}  
+\toprule
+ID Utente  & Parola & Data & Ripetizioni \\
+\midrule
+26       & corriere  & 20180512 & 5      \\
+12       & montatura  & 20180515 & 1      \\
+\bottomrule
+\end{tabular}
+\caption{Esempio di dati registrati}
+\label{tab:esempiodata}
+\end{table}
+
+\section{Metodologia di studio}
+Per quanto di nostra conoscenza, i lavori simili che fanno predizioni di parole sono studiati per determinare gli significati delle parole in contesti specifici ~\cite{kay2010contextual,bower2011context,zaenen1997context}. Ma questi sono diversi dal nostro, perch\'e i loro sistemi non sono progettati con lo scopo educativo; riguardo la tecnica, loro non considerano il crowdsourcing n\'e l'apprendimento automatico. 
+
+Il nostro problema in considerazione pu\`o essere formulato come un problema di raccomandazione; il suggerimento delle parole pu\`o essere considerato come raccomandare gli oggetti agli utenti. La soluzione classica per questa classe di problemi \`e il collaborative filtering (CF)~\cite{ricci2011introduction,herlocker1999algorithmic}. Il CF costruisce un modello predittivo aggregando le scelte parziali di utenti diversi e utilizzare il modello per predire la scelta di un utente nuovo. Altre tecniche emergenti in ambiti simili potrebbero essere gli approcci per l'algorithm selection (AS). AS ha un legame stretto con il problema di raccomandazione~\cite{misir2017alors}, in quanto, raccomandare un algoritmo è simile a raccomandare un oggetto. Una delle tecniche competitive in AS è l'algoritmo SUNNY~\cite{amadini2015sunny,amadini2015feature,liu2017sunny} il quale è basato su $k$-NN~\cite{altman1992introduction}. Essendo molto semplice ed efficiente la tecnica $k$-NN, oltre una buona prestazione, SUNNY fornirebbe una flessibilità più elevata rispetto a CF il quale è basato sulla fattorizzazione di matrice.
+Inoltre, SUNNY è una tecnica che calcola più oggetti da raccomandare e potrebbe essere più adatto al nostro caso di problema.
+
+Nel nostro contesto, gli utenti del dizionario possono essere classificati in diversi categorie: gli utenti che usano costantemente il dizionario per motivo di studio intensivo; gli utenti che lo usano spontaneamente, e.g., esperti di lingua; e quelli che l'hanno usato poche volte poi smesso di usare. Fare la raccomandazione per le ultime due categorie pu\`o essere difficile perch\'e con poca informazione che hanno fornito è difficile configurare loro profili e determinare il loro interesse. Invece, per la prima categoria di utenti, potrebbe essere utile trovare gli utenti che hanno cercato le parole in comune e suggerire le parole all'utente che lei/lui non ha  ancora cercato. Stabilire un criterio per determinare quali sono i profili \emph{utili} da includere per il calcolo di raccomandazione, e a quale categoria di utenti la raccomandazione è più affidabile sono ancora i temi da concretizzare in questo progetto.
+% Quando si applica la tecnica $k$-NN, è fontamentale determinare le 
+% Per realizzare il sistema, si deve introdurre tecnica affidabile di 
+% Nell'ottica di $k$-NN, per suggerire le parole ad utente, si ha bisogno di sapere che parole ha cercato questo utente e trovare altri utenti che hanno cercato le stess paro
+
+\section{Conclusioni}
+In questo lavoro, abbiamo accennato la progettazione di un sistema che raccomanda parole rilevanti agli studenti durante il suo utilizzo di un dizionario elettronico. La raccomandazione prende in considerazione le ricerche degli utenti precedenti in modo da favorire all'utilizzo dell'utente attuale.
+
+Concludiamo con un proverbio greco ``A society grows great when old men plant trees in whose shade they know they shall never sit.'' 
+L'AI di oggi è versatile, una delle sue funzioni potrebbe essere aiutare a preservare l'esperienza delle persone precedenti e ri-generare valori per le persone successive. Questo è anche lo spirito del nostro sistema di raccomandazione: aiutare gli studenti nuovi con le esperienze di studenti precedenti nel percorso di imparare una nuova lingua. Si spera che 
+i futuri studenti faranno sempre meno fatica ad studiare.
+% \subsection{Lunghezza dei contributi}
+
+% I contributi devono avere una lunghezza massima di due pagine, incluse le references.
+
+% \subsection{Software di Word Processing}
+
+% Ital-IA mette a disposizione un set di macro \LaTeX{} e un template in formato Microsoft Word per l'impaginazione del contributo. Nel caso si utilizzi un software di word processing diverso, si seguano le istruzioni che seguono. Gli autori in questo caso sono invitati a controllare che l’aspetto este-tico del contributo e la sua impaginazione siano conformi a quelli dei template forniti.
+
+
+% \section{Stile e formattazione}
+% Sono disponibili template \LaTeX{} and Word che implementa-no le linee guida che seguono.
+
+% \subsection{Layout}
+% I manoscritti devono essere impaginati in doppia colonna, in una pagina di dimensioni 8-1/2$''$ $\times$ 11$''$, rispettando le linee guida che seguono:
+
+% \begin{itemize}
+% \item margine sinistro e destro: .75$''$
+% \item larghezza di colonna: 3.375$''$
+% \item spazio tra le colonne: .25$''$
+% \item margine superiore---prima pagina: 1.375$''$
+% \item margine superiore---pagine seguenti: .75$''$
+% \item margine inferiore: 1.25$''$
+% \item altezza di colonna---prima pagina: 6.625$''$
+% \item altezza di colonna---pagine seguenti: 9$''$
+% \end{itemize}
+
+% Nel caso si utilizzi il formato A4, seguire le stesse istruzio-ni per il margine superiore e sinistro, larghezza di colonna, altezza di colonna e spazio tra le colonne, e modificare op-portunamente il margine inferiore e destro.
+
+% \subsection{Formato del contributo}
+
+% Il file finale deve essere prodotto in formato {\em Portable Document Format} (PDF). Un file PDF può essere generato, per esempio, utilizzando {\tt ps2pdf} in sistemi Unix o Adobe Di-stiller su Windows. All'indirizzo \url{http://www.ps2pdf.com}, poi, è possibile trovare una collezione di software di conversione liberi. L'uso del font Times Roman è fortemente raccomandato. In \LaTeX2e{}, è sufficiente inserire:
+% \begin{quote} 
+% \mbox{\tt $\backslash$usepackage\{times\}}
+% \end{quote}
+% nel preambolo.
+
+
+% \subsection{Titolo e informazioni sugli autori}
+
+% Centrare il titolo sull'intera larghezza della pagina in un carattere grassetto di 14 punti. Il titolo deve essere in maiuscolo e in Title Case. Sotto di esso, inserire centrato il nome dell'autore/i con un font grassetto in 12 punti. Nelle righe seguente inserire le affiliazioni, ogni affiliazione sulla propria linea utilizzando un carattere regolare di 12 punti. Facoltativamente, un elenco separato da virgole di indirizzi e-mail segue le linee di affiliazione, utilizzando un carattere regolare di 12 punti.
+
+% \subsection{Abstract}
+
+% Posizionare l'abstract all'inizio della prima colonna. Utilizzare una larghezza leggermente inferiore rispetto al corpo della carta. L'abstract deve essere anticipato da un titoletto "Abstract" centrato e in un carattere grassetto di 12 punti. Il corpo dell’abstract deve avere lo stesso carattere del corpo del foglio.
+
+% L'abstract dovrebbe essere un riassunto sintetico della lun-ghezza di un paragrafo. Un lettore dovrebbe essere in grado di cogliere lo scopo del contributo e la ragione della sua importanza leggendo l’abstract, che non dovrebbe essere più lungo di 100 parole.
+
+% \subsection{Corpo}
+
+% Il corpo principale del testo segue immediatamente l'abstract. Usare una dimensione di 10 pt in un font chiaro e leggibile.
+
+% Rientrare quando si inizia un nuovo paragrafo, eccetto dopo le intestazioni.
+
+
+% \subsection{Citazioni}
+
+% Le citazioni devono includere il cognome del primo autore e l'anno di pubblicazione, ad esempio~\cite{gottlob:nonmon}. Pubblicazioni con più di un autore devono essere citate come segue:~\cite{abelson-et-al:scheme} o~\cite{bgf:Lixto} (per più di due autori) e~\cite{brachman-schmolze:kl-one} (per due autori).
+
+% \nocite{abelson-et-al:scheme}
+% \nocite{bgf:Lixto}
+% \nocite{brachman-schmolze:kl-one}
+% \nocite{gottlob:nonmon}
+% \nocite{gls:hypertrees}
+% \nocite{levesque:functional-foundations}
+% \nocite{levesque:belief}
+% \nocite{nebel:jair-2000}
+
+% \section{Illustrazioni}
+% \begin{figure}
+% \includegraphics[width=\linewidth]{example-image-a}
+% \caption{Figura di esempio.}
+% \label{fig:sample}
+% \end{figure}
+
+% Posizionare le illustrazioni (figure, disegni, tabelle e fotografie) ovunque nella pagina, nei luoghi in cui vengono prima discusse, piuttosto che alla fine del contributo.
+
+% Le illustrazioni dovrebbero essere posizionate in alto (preferibilmente) o in fondo alla pagina, a meno che non siano parte integrante del flusso narrativo. Quando sono posizionate nella parte inferiore o superiore di una pagina, le illustrazioni possono essere inserite su entrambe le colonne, ma non quando appaiono in linea.
+
+% Tutte le illustrazioni devono essere comprensibili se stampate in bianco e nero, anche se è possibile utilizzare i colori per migliorarle. Si consiglia di utilizzare il formato mostrato nella Figura~\ref{fig:sample}. Posizionare numeri di illustrazione e didascalie sotto le illustrazioni. Le didascalie dovrebbero sempre apparire sotto l'illustrazione.
+
+% \section{Tabelle}
+
+% Le tabelle sono considerate alla stregua di illustrazioni contenenti dati. Pertanto, dovrebbero anche apparire flottati in alto (preferibilmente) o in fondo alla pagina e con le didascalie sotto di esse. Se si utilizza MS Word, si consiglia di inserire le tabelle all'interno di una casella di testo per facilitare il posizionamento.
+
+% Si consiglia di utilizzare il formato mostrato nella Tabella~\ref{tab:booktabs}, dove non ci sono linee verticali e solo tre orizzontali.
+
+% \begin{table}
+% \centering
+% \begin{tabular}{lrr}  
+% \toprule
+% Scenario  & $\delta$ (s) & Tempo (ms) \\
+% \midrule
+% Paris       & 0.1  & 13.65      \\
+%             & 0.2  & 0.01       \\
+% New York    & 0.1  & 92.50      \\
+% Singapore   & 0.1  & 33.33      \\
+%             & 0.2  & 23.01      \\
+% \bottomrule
+% \end{tabular}
+% \caption{Tabella di esempio}
+% \label{tab:booktabs}
+% \end{table}
+
+% \section{Formule}
+
+% Se il contributo contiene un numero significativo di equazioni, consigliamo vivamente di utilizzare LaTeX. I numeri delle equazioni dovrebbero avere lo stesso font e dimensioni del testo principale (10pt). I simboli principali della formula non devono essere inferiori a 9pt.
+% %
+% \begin{equation}
+%     f(x) = ax + b
+% \end{equation}
+
+% \section{Algoritmi ed elenchi}
+
+% Algoritmi ed elenchi sono un tipo speciale di illustrazione. Come tutte le illustrazioni, dovrebbero apparire in alto (preferibilmente) o in fondo alla pagina. Tuttavia, la loro didascalia dovrebbe apparire nell'intestazione, giustificata a sinistra e racchiusa tra linee orizzontali, come mostrato in Algoritmo~\ref{alg:algorithm}. Il corpo dell'algoritmo dovrebbe essere terminato con un'altra linea orizzontale. Spetta agli autori decidere se mostrare numeri di linea o meno, come formattare i commenti, ecc.
+
+% Suggeriamo di posizionare l'algoritmo all'interno di una casella di testo per facilitare il posizionamento quando si utilizza MS Word.
+
+% \begin{algorithm}[tb]
+% \caption{Algoritmo di esempio}
+% \label{alg:algorithm}
+% \textbf{Input}: Input dell'algoritmo\\
+% \textbf{Parameter}: Lista opzionale di parametri\\
+% \textbf{Output}: Output dell’algoritmo
+% \begin{algorithmic}[1] %[1] enables line numbers
+% \STATE Let $t=0$.
+% \WHILE{condition}
+% \STATE Azione.
+% \IF {condizione}
+% \STATE Esegui task A.
+% \ELSE
+% \STATE Esegui task B.
+% \ENDIF
+% \ENDWHILE
+% \STATE \textbf{return} soluzione
+% \end{algorithmic}
+% \end{algorithm}
+
+
+%% The file named.bst is a bibliography style file for BibTeX 0.99c
+\bibliographystyle{named}
+\bibliography{ital-ia19}
+
+\end{document}
+

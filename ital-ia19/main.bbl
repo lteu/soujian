@@ -1,0 +1,80 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Altman}{1992}]{altman1992introduction}
+Naomi~S Altman.
+\newblock An introduction to kernel and nearest-neighbor nonparametric
+  regression.
+\newblock {\em The American Statistician}, 46(3):175--185, 1992.
+
+\bibitem[\protect\citeauthoryear{Amadini \bgroup \em et al.\egroup
+  }{2015a}]{amadini2015feature}
+Roberto Amadini, Fabio Biselli, Maurizio Gabbrielli, Tong Liu, e Jacopo Mauro.
+\newblock Feature selection for sunny: A study on the algorithm selection
+  library.
+\newblock In {\em 2015 IEEE 27th International Conference on Tools with
+  Artificial Intelligence (ICTAI)}, pages 25--32. IEEE, 2015.
+
+\bibitem[\protect\citeauthoryear{Amadini \bgroup \em et al.\egroup
+  }{2015b}]{amadini2015sunny}
+Roberto Amadini, Maurizio Gabbrielli, e Jacopo Mauro.
+\newblock Sunny-cp: a sequential cp portfolio solver.
+\newblock In {\em Proceedings of the 30th Annual ACM Symposium on Applied
+  Computing}, pages 1861--1867. ACM, 2015.
+
+\bibitem[\protect\citeauthoryear{Bower \bgroup \em et al.\egroup
+  }{2011}]{bower2011context}
+Jason Bower, Kenji Furuuchi, Simon Liu, Kenichi Morimoto, Daryn Robbins, Chet
+  Laughlin, e Peter Davis.
+\newblock Context based word prediction, March~22 2011.
+\newblock US Patent 7,912,700.
+
+\bibitem[\protect\citeauthoryear{Herlocker \bgroup \em et al.\egroup
+  }{1999}]{herlocker1999algorithmic}
+Jonathan~L Herlocker, Joseph~A Konstan, Al~Borchers, e John Riedl.
+\newblock An algorithmic framework for performing collaborative filtering.
+\newblock In {\em 22nd Annual International ACM SIGIR Conference on Research
+  and Development in Information Retrieval, SIGIR 1999}, pages 230--237.
+  Association for Computing Machinery, Inc, 1999.
+
+\bibitem[\protect\citeauthoryear{Kay \bgroup \em et al.\egroup
+  }{2010}]{kay2010contextual}
+David~Jon Kay, Ethan~R Bradford, Pim van Meurs, e Peter~C Peddie.
+\newblock Contextual prediction of user words and user actions, March~16 2010.
+\newblock US Patent 7,679,534.
+
+\bibitem[\protect\citeauthoryear{Liu}{a}]{yihanwebsite}
+Tong Liu.
+\newblock Sitoweb del dizionario yihan.
+\newblock \url{https://www.yihan.it}.
+
+\bibitem[\protect\citeauthoryear{Liu}{b}]{yihanapp}
+Tong Liu.
+\newblock Yihan su app store.
+\newblock
+  \url{https://itunes.apple.com/se/app/bo-da-yi-han-ci-dian/id881214823}.
+
+\bibitem[\protect\citeauthoryear{Liu \bgroup \em et al.\egroup
+  }{2017}]{liu2017sunny}
+Tong Liu, Roberto Amadini, e Jacopo Mauro.
+\newblock Sunny with algorithm configuration.
+\newblock In {\em OASC 2017-Open Algorithm Selection Challenge}, pages 12--14,
+  2017.
+
+\bibitem[\protect\citeauthoryear{M{\i}s{\i}r e Sebag}{2017}]{misir2017alors}
+Mustafa M{\i}s{\i}r e Mich{\`e}le Sebag.
+\newblock Alors: An algorithm recommender system.
+\newblock {\em Artificial Intelligence}, 244:291--314, 2017.
+
+\bibitem[\protect\citeauthoryear{Ricci \bgroup \em et al.\egroup
+  }{2011}]{ricci2011introduction}
+Francesco Ricci, Lior Rokach, e Bracha Shapira.
+\newblock Introduction to recommender systems handbook.
+\newblock In {\em Recommender systems handbook}, pages 1--35. Springer, 2011.
+
+\bibitem[\protect\citeauthoryear{Zaenen e Karttunen}{1997}]{zaenen1997context}
+Annie~E Zaenen e Lauri~J Karttunen.
+\newblock Context-sensitive method of finding information about a word in an
+  electronic dictionary, June~24 1997.
+\newblock US Patent 5,642,522.
+
+\end{thebibliography}
