@@ -6,3 +6,24 @@ least record: 1
 most records: 5917539 (including duplications and ita and Chinese)
 most records: 3027972 (after removal)
 
+
+
+====
+
+The aim of this BDExp it to design a system unit that enhances the UX of a dictionary app and subsequently evaluate its business impact trough real-world application. Technically, it is believed that by analysing properly the user searched data, it is possible to find out usage patterns and devise search recommendation services which facilitate product usage and thus increase users' engagement.
+
+
+This work will cover the following points;
+
+- comparative analysis of Yihan dictionary in the market and strategies to be developed.
+- description of the saved usage data and possible applications can be generated from them
+- selection of the application and implementation
+- how to deliver the product to customers
+- market assessment
+
+
+===
+
+number of users:
+
+
