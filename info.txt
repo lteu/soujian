@@ -1,15 +1,37 @@
 key information:
 
-4093 distinct users in 2018.
+4092 distinct users in 2018.
 
-least record: 1
-most records: 5917539 (including duplications and ita and Chinese)
-most records: 3027972 (after removal)
+smallest record: 1
+biggest record: 58889 (uid 254, only ita)
+
+====
+8/6/2019
+- eliminate insignificant users 
+
+ref: 
+[164, 299, 140, 112, 84, 74, 64, 59, 53, 52, 46, 46, 34, 43, 47]
+[5,10,15, ... ,75]
+
+- 10 split
+
+- half & half (or maybe the next 20)
+
+- 10-cv check coverage (maximum theoretically) to see if worth the effort
+
+- algorithm of prediction, optimise the coverage to see feasibility 
+
+- design a service product, e.g., person-tailored word recommender, next 20-50 words you should know to make you live better!
+
+
+? open questions,
+- can i decide whether one is a long-time user by observing his search frequency and type of words that search.
+- can i persuade short-time user to become long-time ?
 
 
 
 ====
-
+1/6/2019
 The aim of this BDExp it to design a system unit that enhances the UX of a dictionary app and subsequently evaluate its business impact trough real-world application. Technically, it is believed that by analysing properly the user searched data, it is possible to find out usage patterns and devise search recommendation services which facilitate product usage and thus increase users' engagement.
 
 
@@ -23,7 +45,5 @@ This work will cover the following points;
 
 
 ===
-
-number of users:
 
 

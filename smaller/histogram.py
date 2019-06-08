@@ -14,7 +14,7 @@ def main(args):
 
 	start_time = time.time()
 
-	arr_steps = [0]+list(range(1,5000,50))
+	arr_steps = [0]+list(range(1,5000,5))
 	print(arr_steps)
 
 	filetoread= 'out.csv'
