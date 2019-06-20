@@ -57,7 +57,9 @@ def loadSQL2(filetoread):
 		if len(row) < 3:
 			continue
 
-		userid = row[0]
+		userid = int(row[0])
+		# if userid == 1463:
+		# 	print('hello')
 		word = row[1].strip()
 		thedate = row[2]
 		thedate = int(thedate)
@@ -72,4 +74,7 @@ def loadSQL2(filetoread):
 			users[userid] = [anItem]
 		else:
 			users[userid].append(anItem)
+
+	# print (users[1463])
+	# sys.exit('deg2')
 	return users

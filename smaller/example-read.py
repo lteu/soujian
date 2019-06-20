@@ -1,3 +1,14 @@
+'''
+data structure:
+
+userid - 	[
+				[word1,thedate,ifexist],
+				[word2,thedate,ifexist],
+	  			...
+  			]
+
+'''
+
 import csv
 import sys
 import time
