@@ -133,10 +133,12 @@ def findRecommendationFromNeigh(num_reccom,user_words,neigh,context_users):
 	# print(statsInList[:50],eff_user_words)
 	# sys.exit()
 
-def predictionMatchingScore(recommended,user_ground):
+def predictionMatchingScore(userid,recommended,user_ground):
 	words_rec = [x[0] for x in recommended]
 	words_grd = [x[0] for x in user_ground]
 	words_guessed = [x for x in words_rec if x in words_grd]
+	if len(words_rec) == 0:
+		sys.exit('0 recommendation occured for user with ID',userid)
 	precision = len(words_guessed)/len(words_rec)
 	return precision
 	# print (precision)
@@ -148,7 +150,7 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 		recommended = findRecommendationFromNeigh(num_reccom,info,neigh,context_users)
 		# todo then check precision!
 		# print(recommended)
-		precision = predictionMatchingScore(recommended,test_ground[userid])
+		precision = predictionMatchingScore(userid,recommended,test_ground[userid])
 		print(precision)
 		stack.append(precision)
 
