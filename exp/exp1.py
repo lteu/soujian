@@ -107,7 +107,7 @@ def findNeighbourhood(current_userid,list_words,context_users,k=10):
 
 	rank.sort(key=lambda x:x[1],reverse=True)
 	rank = rank[:k]
-	print (list_words, "---------\n",rank,"---\n",current_userid)
+	print (list_words,"\n---------\nrank",rank,"---\ncurrent user",current_userid)
 	# sys.exit()
 	return rank
 
@@ -156,6 +156,7 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 	info = test_instances[170]
 	neigh = findNeighbourhood(userid,info,context_users)
 	print(neigh)
+	print(test_ground[170])
 	sys.exit()
 	for userid,info in test_instances.items():
 		neigh = findNeighbourhood(userid,info,context_users)
