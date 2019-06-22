@@ -152,8 +152,8 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 
 	# debug, need deletion
 	userid = 170
-	print(list(test_instances.keys()))
-	info = test_instances['170']
+	# print(list(test_instances.keys()))
+	# info = test_instances[170]
 	neigh = findNeighbourhood(userid,info,context_users)
 	print(neigh)
 	sys.exit()
