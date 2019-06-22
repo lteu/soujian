@@ -129,6 +129,10 @@ def findRecommendationFromNeigh(num_reccom,user_words,neigh,context_users):
 	statsInList = list(stats.items())
 	statsInList.sort(key=lambda x:x[1],reverse=True)
 	recommended = statsInList[:num_reccom]
+
+	#debug
+	if len(recommended) == 0:
+		print('debug msg: recommended words - nought, neigh found',len(neigh))
 	return recommended
 	# print(statsInList[:50],eff_user_words)
 	# sys.exit()
@@ -138,7 +142,7 @@ def predictionMatchingScore(userid,recommended,user_ground):
 	words_grd = [x[0] for x in user_ground]
 	words_guessed = [x for x in words_rec if x in words_grd]
 	if len(words_rec) == 0:
-		sys.exit('0 recommendation occured for user with ID',userid)
+		sys.exit('0 recommendation occured for user with ID '+ str(userid))
 	precision = len(words_guessed)/len(words_rec)
 	return precision
 	# print (precision)
