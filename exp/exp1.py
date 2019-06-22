@@ -151,17 +151,20 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 	stack = []
 
 	# debug, need deletion
-	userid = 170
-	# print(list(test_instances.keys()))
-	info = test_instances[170]
-	neigh = findNeighbourhood(userid,info,context_users)
-	print(neigh)
-	print(test_ground[170])
-	sys.exit()
+	# userid = 170
+	# # print(list(test_instances.keys()))
+	# info = test_instances[170]
+	# neigh = findNeighbourhood(userid,info,context_users)
+	# print(neigh)
+	# print(test_ground[170])
+	# sys.exit()
 	for userid,info in test_instances.items():
 		neigh = findNeighbourhood(userid,info,context_users)
 		recommended = findRecommendationFromNeigh(num_reccom,info,neigh,context_users)
-		# todo then check precision!
+		
+		if len(recommended)==0: # if cannot be predicted 
+			continue
+			
 		# print(recommended)
 		precision = predictionMatchingScore(userid,recommended,test_ground[userid])
 		print(precision)
