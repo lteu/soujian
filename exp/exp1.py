@@ -107,7 +107,7 @@ def findNeighbourhood(current_userid,list_words,context_users,k=10):
 
 	rank.sort(key=lambda x:x[1],reverse=True)
 	rank = rank[:k]
-	# print (list_words, "---------\n",rank,"---\n",current_userid)
+	print (list_words, "---------\n",rank,"---\n",current_userid)
 	# sys.exit()
 	return rank
 
