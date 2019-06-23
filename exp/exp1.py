@@ -295,7 +295,7 @@ def main(args):
 	# 	# print (counter,len(words))
 	# 	counter += 1
 	# print(list_count)
-
+	print("--- Completed in %s seconds ---" % (time.time() - start_time))
 
 
 if __name__ == '__main__':
