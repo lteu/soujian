@@ -1,4 +1,7 @@
 '''
+This exp aims to understand long-term prediction.
+Let's say, 2 months for user profile features and 4 month for prediction
+
 data structure:
 
 userid - 	[
@@ -107,7 +110,7 @@ def findNeighbourhood(current_userid,list_words,context_users,k=10):
 
 	rank.sort(key=lambda x:x[1],reverse=True)
 	rank = rank[:k]
-	print (list_words,"\n---------\nrank",rank,"---\ncurrent user",current_userid)
+	# print (list_words,"\n---------\nrank",rank,"---\ncurrent user",current_userid)
 	# sys.exit()
 	return rank
 
@@ -138,8 +141,16 @@ def findRecommendationFromNeigh(num_reccom,user_words,neigh,context_users):
 	# sys.exit()
 
 def predictionMatchingScore(userid,recommended,user_ground):
-	words_rec = [x[0] for x in recommended]
-	words_grd = [x[0] for x in user_ground]
+	words_rec = [x[0][:-1] for x in recommended]
+	words_grd = set([x[0][:-1] for x in user_ground])
+	words_guessed = []
+
+	# print(words_grd[0],words_grd[0][:-1])
+	# print(words_rec[0],words_grd[0])
+	# sys.exit()
+	# for x in words_rec:
+	# 	for y in words_grd:
+
 	words_guessed = [x for x in words_rec if x in words_grd]
 	if len(words_rec) == 0:
 		sys.exit('0 recommendation occured for user with ID '+ str(userid))
@@ -159,7 +170,9 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 	# print(test_ground[170])
 	# sys.exit()
 	for userid,info in test_instances.items():
+		
 		neigh = findNeighbourhood(userid,info,context_users)
+		
 		recommended = findRecommendationFromNeigh(num_reccom,info,neigh,context_users)
 		
 		if len(recommended)==0: # if cannot be predicted 
@@ -167,6 +180,8 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 			
 		# print(recommended)
 		precision = predictionMatchingScore(userid,recommended,test_ground[userid])
+		
+
 		print(precision)
 		stack.append(precision)
 
@@ -184,11 +199,13 @@ def oneFoldExp(test_ids,full_users,month_threshold,month_train,num_reccom):
 		del context_users[target_id]
 
 	# secondly, extract test user info
-	test_instances,test_ground = extTestUsersInfo(target_users,month_train)
 
+	test_instances,test_ground = extTestUsersInfo(target_users,month_train)
+	
 	# get predictions
 	# print(test_ids)
 	stack = predictWords(test_instances,test_ground,context_users,num_reccom)
+
 	return statistics.mean(stack)
 
 def main(args):
@@ -205,9 +222,10 @@ def main(args):
 	start_time = time.time()
 
 	filetoread= 'out2.csv'
+	
 	users = loadSQL2(filetoread)
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))
-
+	
 	iterate_dir = users
 
 	test_users = {}
@@ -217,8 +235,10 @@ def main(args):
 		if checkTimeRange(key,item,month_threshold):
 			test_users[key] = item
 
+	
 	user_ids = list(test_users.keys())
 	partitioned = partition_shuffle(user_ids,number_of_folds)
+	
 
 
 	avgs = []
@@ -228,6 +248,7 @@ def main(args):
 	i = int(args[0])
 	test_ids = partitioned[i]
 	avg = oneFoldExp(test_ids,users,month_threshold,month_train,num_reccom)
+	
 	avgs.append(avg)
 	# for i in range(0,5):
 	# 	test_ids = partitioned[i]
