@@ -170,6 +170,9 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 	# print(test_ground[170])
 	# sys.exit()
 	for userid,info in test_instances.items():
+
+		if len(info) < num_reccom or len(test_ground[userid]) < num_reccom:
+			continue
 		
 		neigh = findNeighbourhood(userid,info,context_users)
 		
@@ -217,7 +220,7 @@ def main(args):
 	month_threshold = 2
 	month_train = month_threshold/2
 	number_of_folds = 5
-	num_reccom = 50
+	num_reccom = 20
 	# ----
 	start_time = time.time()
 
