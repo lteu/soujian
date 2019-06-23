@@ -23,12 +23,10 @@ import statistics
 
 root_arr = os.path.realpath(__file__).split('/')[:-2]
 root = '/'.join(root_arr) 
-# src_path = root + '/learn/'
 sys.path.append(root)
 
 from wtoolkit import *
-# from mid import *
-# from wtoolkit import isascii,loadSQL
+
 
 def dateToDays(aDate):
 	days = (int(str(aDate)[4:6])-1)*30 + int(str(aDate)[-2:])
@@ -39,10 +37,6 @@ def checkTimeRange(userid,item,month_threshold):
 	initial_date = dateToDays(item[0][1])
 	end_date = dateToDays(item[-1][1])
 
-	# if str(userid) == '2356':
-	# 	print(initial_date,end_date)
-	# 	print((end_date-initial_date)/30)
-	# 	sys.exit()
 	if (end_date-initial_date)/30 >= month_threshold:
 		return True
 	else:
@@ -88,16 +82,7 @@ def extTestUsersInfo(target_users,month_train):
 def getSimilarityScore(user_words,tmp_words,userid):
 	eff_user_words = [x[0] for x in user_words]
 	eff_tmp_words = [x[0] for x in tmp_words]
-	# print (eff_user_words,eff_tmp_words)
-	# sys.exit('deg3')
 	occurrence = [x for x in eff_user_words if x in eff_tmp_words]
-	# print(userid)
-	# if int(userid) == 3320:
-	# 	print (tmp_words)
-	# 	print (occurrence)
-	# 	sys.exit('deg')
-	# if len(occurrence) > 0:
-	# 	print(occurrence,userid)
 	return len(occurrence) / len(user_words)
 
 def findNeighbourhood(current_userid,list_words,context_users,k=10):
@@ -110,8 +95,6 @@ def findNeighbourhood(current_userid,list_words,context_users,k=10):
 
 	rank.sort(key=lambda x:x[1],reverse=True)
 	rank = rank[:k]
-	# print (list_words,"\n---------\nrank",rank,"---\ncurrent user",current_userid)
-	# sys.exit()
 	return rank
 
 def findRecommendationFromNeigh(num_reccom,user_words,neigh,context_users):
@@ -137,20 +120,12 @@ def findRecommendationFromNeigh(num_reccom,user_words,neigh,context_users):
 	if len(recommended) == 0:
 		print('debug msg: recommended words - nought, neigh found',len(neigh))
 	return recommended
-	# print(statsInList[:50],eff_user_words)
-	# sys.exit()
+
 
 def predictionMatchingScore(userid,recommended,user_ground):
 	words_rec = [x[0][:-1] for x in recommended]
 	words_grd = set([x[0][:-1] for x in user_ground])
 	words_guessed = []
-
-	# print(words_grd[0],words_grd[0][:-1])
-	# print(words_rec[0],words_grd[0])
-	# sys.exit()
-	# for x in words_rec:
-	# 	for y in words_grd:
-
 	words_guessed = [x for x in words_rec if x in words_grd]
 	if len(words_rec) == 0:
 		sys.exit('0 recommendation occured for user with ID '+ str(userid))
@@ -160,15 +135,6 @@ def predictionMatchingScore(userid,recommended,user_ground):
 
 def predictWords(test_instances,test_ground,context_users,num_reccom):
 	stack = []
-
-	# debug, need deletion
-	# userid = 170
-	# # print(list(test_instances.keys()))
-	# info = test_instances[170]
-	# neigh = findNeighbourhood(userid,info,context_users)
-	# print(neigh)
-	# print(test_ground[170])
-	# sys.exit()
 	for userid,info in test_instances.items():
 
 		if len(info) < num_reccom or len(test_ground[userid]) < num_reccom:
@@ -185,12 +151,12 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 		precision = predictionMatchingScore(userid,recommended,test_ground[userid])
 		
 
-		print(precision)
+		# print(precision)
 		stack.append(precision)
 
-	print('stack',stack)
+	# print('stack',stack)
 	return stack
-		# sys.exit()
+
 
 def oneFoldExp(test_ids,full_users,month_threshold,month_train,num_reccom):
 	context_users = {**full_users}
@@ -204,9 +170,6 @@ def oneFoldExp(test_ids,full_users,month_threshold,month_train,num_reccom):
 	# secondly, extract test user info
 
 	test_instances,test_ground = extTestUsersInfo(target_users,month_train)
-	
-	# get predictions
-	# print(test_ids)
 	stack = predictWords(test_instances,test_ground,context_users,num_reccom)
 
 	return statistics.mean(stack)
@@ -242,59 +205,18 @@ def main(args):
 	user_ids = list(test_users.keys())
 	partitioned = partition_shuffle(user_ids,number_of_folds)
 	
-
-
 	avgs = []
 
-	
 
 	i = int(args[0])
 	test_ids = partitioned[i]
 	avg = oneFoldExp(test_ids,users,month_threshold,month_train,num_reccom)
 	
 	avgs.append(avg)
-	# for i in range(0,5):
-	# 	test_ids = partitioned[i]
-	# 	avg = oneFoldExp(test_ids,users,month_threshold,month_train,num_reccom)
-	# 	avgs.append(avg)
 
 	print ('avgs',avgs)
-
-	print("--- number of remained users %s ---" % (len(partitioned)))
 	print('number of users in consideration ',len(partitioned[0]),' with month set as ',month_threshold)
-	# print(test_users.keys()[10])
 
-	# usersInList = list(users.items())
-	# usersInList.sort(key=lambda x:len(x[1]))
-
-
-	# print("--- sorted in %s seconds ---" % (time.time() - start_time))
-
-
-	# number_of_words = 0
-	# for userprofile in usersInList:
-	# 	number_of_words += len(userprofile[1])
-
-
-	# print('=== report stats ====')
-	# num_of_users = len(users.keys())
-	# print('num of users:',num_of_users)
-	# print('num of words:',number_of_words)
-	# print('avg word per user:',number_of_words/num_of_users)
-	# median_user_index = int(num_of_users/2)
-	# print('median word per user:',len(usersInList[median_user_index][1]))
-	# print('==============')
-
-	# print ('normed user id and search frequency')
-	# counter = 1
-	# list_count=[]
-	# for userinfo in usersInList:
-	# 	userid = userinfo[0]
-	# 	words = userinfo[1]
-	# 	list_count.append(len(words))
-	# 	# print (counter,len(words))
-	# 	counter += 1
-	# print(list_count)
 	print("--- Completed in %s seconds ---" % (time.time() - start_time))
 
 
