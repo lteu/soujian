@@ -22,7 +22,7 @@ import random
 import statistics
 
 root_arr = os.path.realpath(__file__).split('/')[:-2]
-root = '/'.join(root_arr) 
+root = '/'.join(root_arr+['src']) 
 sys.path.append(root)
 
 from wtoolkit import *

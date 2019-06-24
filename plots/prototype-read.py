@@ -1,13 +1,6 @@
-'''
-data structure:
-
-userid - 	[
-				[word1,thedate,ifexist],
-				[word2,thedate,ifexist],
-	  			...
-  			]
-
-'''
+"""
+A prototype 
+"""
 
 import csv
 import sys
@@ -16,31 +9,27 @@ import yaml
 import os
 
 root_arr = os.path.realpath(__file__).split('/')[:-2]
-root = '/'.join(root_arr) 
-# src_path = root + '/learn/'
+root = '/'.join(root_arr+['src']) 
 sys.path.append(root)
 
+
 from wtoolkit import *
-# from mid import *
-# from wtoolkit import isascii,loadSQL
+
 
 def main(args):
 
 	start_time = time.time()
 
-	filetoread= 'out.csv'
+	root_arr = os.path.realpath(__file__).split('/')[:-2]
+	datadir = '/'.join(root_arr+['data']) 
+	filetoread= datadir+'/out2.csv'
+
 	users = loadSQL2(filetoread)
 
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))
 
+
 	iterate_dir = users
-	# eliminate duplicates
-	for key,item in iterate_dir.items():
-		users[key] = set(map(tuple, item))
-
-	print("--- duplicates eliminated in %s seconds ---" % (time.time() - start_time))
-
-
 	usersInList = list(users.items())
 	usersInList.sort(key=lambda x:len(x[1]))
 
@@ -62,16 +51,16 @@ def main(args):
 	print('median word per user:',len(usersInList[median_user_index][1]))
 	print('==============')
 
-	# print ('normed user id and search frequency')
-	# counter = 1
-	# list_count=[]
-	# for userinfo in usersInList:
-	# 	userid = userinfo[0]
-	# 	words = userinfo[1]
-	# 	list_count.append(len(words))
-	# 	# print (counter,len(words))
-	# 	counter += 1
-	# print(list_count)
+	print ('normed user id and search frequency')
+	counter = 1
+	list_count=[]
+	for userinfo in usersInList:
+		userid = userinfo[0]
+		words = userinfo[1]
+		list_count.append(len(words))
+		# print (counter,len(words))
+		counter += 1
+	print(list_count)
 
 
 

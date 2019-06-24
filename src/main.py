@@ -1,7 +1,7 @@
 import csv
 import sys
 import time
-
+import os
 import yaml
 from wtoolkit import isascii,loadSQL
 
@@ -9,7 +9,10 @@ def main(args):
 
 	start_time = time.time()
 
-	filetoread= 'wlog.csv'
+
+	root_arr = os.path.realpath(__file__).split('/')[:-2]
+	datadir = '/'.join(root_arr+['data']) 
+	filetoread= datadir+'/wlog.csv'
 	users = loadSQL(filetoread)
 
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))
@@ -43,30 +46,17 @@ def main(args):
 	print('median word per user:',len(usersInList[median_user_index][1]))
 	print('==============')
 
-	print ('normed user id and search frequency')
-	counter = 1
-	list_count=[]
+	# PRINT csv file
+	out_file = datadir+'/out.csv'
+	print('Printing CSV file ...',out_file)
+	writer = csv.writer(open(out_file, 'w'), delimiter = ';')
 	for userinfo in usersInList:
+		row = ''
 		userid = userinfo[0]
 		words = userinfo[1]
-		list_count.append(len(words))
-		print (counter,len(words))
-		counter += 1
-	# print(list_count) # for plot
-
-
-	# PRINT csv file
-	# out_file = 'out.csv'
-	# print('Printing CSV file ...',out_file)
-	# writer = csv.writer(open(out_file, 'w'), delimiter = ';')
-
-	# for userinfo in usersInList:
-	# 	row = ''
-	# 	userid = userinfo[0]
-	# 	words = userinfo[1]
-	# 	for w in words:
-	# 		writer.writerow([str(userid),str(w[0]),str(w[1]),str(w[2])])
-	# print("--- %s seconds ---" % (time.time() - start_time))
+		for w in words:
+			writer.writerow([str(userid),str(w[0]),str(w[1]),str(w[2])])
+	print("--- %s seconds ---" % (time.time() - start_time))
 
 
 

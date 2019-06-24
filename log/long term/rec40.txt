@@ -1,0 +1,13 @@
+--- loaded in 3.5737009048461914 seconds ---
+avg fold 1 is 0.2131076388888889
+number of users in consideration  454  with month set as  2
+avg fold 1 is 0.23477198697068405
+number of users in consideration  454  with month set as  2
+avg fold 1 is 0.22915254237288135
+number of users in consideration  454  with month set as  2
+avg fold 1 is 0.21629392971246006
+number of users in consideration  454  with month set as  2
+avg fold 1 is 0.21949838187702267
+number of users in consideration  454  with month set as  2
+--- Completed in 7934.477118730545 seconds ---
+final for num recc 40 is 0.22256489596438742

@@ -5,8 +5,9 @@ import yaml
 import os
 
 root_arr = os.path.realpath(__file__).split('/')[:-2]
-root = '/'.join(root_arr) 
+root = '/'.join(root_arr+['src']) 
 sys.path.append(root)
+
 
 from wtoolkit import *
 
@@ -17,7 +18,11 @@ def main(args):
 	arr_steps = [0]+list(range(1,5000,5))
 	print(arr_steps)
 
-	filetoread= 'out.csv'
+	
+	root_arr = os.path.realpath(__file__).split('/')[:-2]
+	datadir = '/'.join(root_arr+['data']) 
+	filetoread= datadir+'/out.csv'
+
 	users = loadSQL2(filetoread)
 
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))

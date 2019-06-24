@@ -1,7 +1,6 @@
 """
-This file refines the generated out.csv
-it leaves only the user records who have searched more than 10 words during a year,
-and only the found words are left
+Number of seaches per word
+It only considers the user records who searched more than 10 words during a year.
 """
 
 import csv
@@ -11,8 +10,9 @@ import yaml
 import os
 
 root_arr = os.path.realpath(__file__).split('/')[:-2]
-root = '/'.join(root_arr) 
+root = '/'.join(root_arr+['src']) 
 sys.path.append(root)
+
 
 from wtoolkit import *
 
@@ -21,7 +21,10 @@ def main(args):
 
 	start_time = time.time()
 
-	filetoread= 'out2.csv'
+	root_arr = os.path.realpath(__file__).split('/')[:-2]
+	datadir = '/'.join(root_arr+['data']) 
+	filetoread= datadir+'/out2.csv'
+
 	loaded_users = loadSQL2(filetoread)
 
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))
@@ -35,8 +38,6 @@ def main(args):
 		userid = userinfo[0]
 		words = userinfo[1]
 		for w in words:
-			# print(w)
-			# sys.exit()
 			wordstr = w[0]
 			worddate = w[1]
 			if wordstr not in word_dic.keys():

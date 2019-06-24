@@ -63,3 +63,22 @@ This work will cover the following points;
 ===
 
 
+
+# Diary
+
+- 1 week
+- day 1, conference slides
+- day 2, conference paper
+- day 3, conference discussion
+- day 4, conference 
+
+- day, source data generation and extraction
+- day, source data manipulation
+
+4/6/2019
+10:30-17:30, words management with python
+
+5/6/2019
+9:30-17:30, format analysis to conserve data (yaml or csv or json), data hierarchy study, preliminary statistics analysis, plot users and words.
+
+

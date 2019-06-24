@@ -9,11 +9,6 @@ import sys
 import time
 import yaml
 import os
-
-root_arr = os.path.realpath(__file__).split('/')[:-2]
-root = '/'.join(root_arr) 
-sys.path.append(root)
-
 from wtoolkit import *
 
 
@@ -21,7 +16,10 @@ def main(args):
 
 	start_time = time.time()
 
-	filetoread= 'out.csv'
+	root_arr = os.path.realpath(__file__).split('/')[:-2]
+	datadir = '/'.join(root_arr+['data']) 
+
+	filetoread= datadir+'/out.csv'
 	loaded_users = loadSQL2(filetoread)
 
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))
@@ -72,7 +70,7 @@ def main(args):
 
 
 	# PRINT csv file
-	out_file = 'out2.csv'
+	out_file = datadir+'/out2.csv'
 	print('Printing CSV file ...',out_file)
 	writer = csv.writer(open(out_file, 'w'), delimiter = ';')
 	for userinfo in usersInList:
