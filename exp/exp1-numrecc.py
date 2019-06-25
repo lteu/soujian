@@ -21,7 +21,11 @@ def main(args):
 	# ----
 	start_time = time.time()
 
-	filetoread= 'out2.csv'
+	root_arr = os.path.realpath(__file__).split('/')[:-2]
+	datadir = '/'.join(root_arr+['data']) 
+
+	filetoread= datadir+'/out2.csv'
+
 	
 	users = loadSQL2(filetoread)
 	print("--- loaded in %s seconds ---" % (time.time() - start_time))

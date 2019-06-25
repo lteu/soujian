@@ -55,7 +55,7 @@ def main(args):
 		userid = userinfo[0]
 		words = userinfo[1]
 		for w in words:
-			writer.writerow([str(userid),str(w[0]),str(w[1]),str(w[2])])
+			writer.writerow([str(userid),str(w[0]),str(w[1]),str(w[2]),str(w[3])])
 	print("--- %s seconds ---" % (time.time() - start_time))
 
 

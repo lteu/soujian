@@ -12,6 +12,6 @@ Steps:
 
 ## Files
 
-- folder ``src'' hosts support function and a file to eliminate duplicated searches.
-- folder ``plot'' contains scripts that extract stats and plot results.
-- folder ``exp'' includes files for the CV experiments.
+- folder `src` hosts support function and a file to eliminate duplicated searches.
+- folder `plot`  contains scripts that extract stats and plot results.
+- folder `exp` includes files for the CV experiments.

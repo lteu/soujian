@@ -21,12 +21,13 @@ def loadSQL(filetoread):
 	for row in thereader:
 		if len(row) < 5:
 			continue
+		searchid = row[0].replace('"','')
 		userid = row[1].replace('"','')
 		word = row[2].replace('"','').strip()
 		thedate = row[4].replace('"','')
 		thedate = int(thedate)
 		ifexist = row[6]
-		anItem = [word,thedate,ifexist]
+		anItem = [word,thedate,ifexist,searchid]
 
 		# account only ita words
 		if not isascii(word):
@@ -64,7 +65,8 @@ def loadSQL2(filetoread):
 		thedate = row[2]
 		thedate = int(thedate)
 		ifexist = row[3]
-		anItem = [word,thedate,ifexist]
+		searchid = row[4]
+		anItem = [word,thedate,ifexist,searchid]
 		# account only ita words
 		if not isascii(word):
 			continue
