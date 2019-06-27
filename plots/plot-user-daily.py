@@ -23,6 +23,6 @@ print(500,statistics.mean(arr[:500]))
 txt = "Max daily search in 2018"
 # plt.figtext(0.5, 0.10, txt, wrap=True, horizontalalignment='center', fontsize=12)
 plt.title(txt)
-plt.xlabel('User Identity')
-plt.ylabel('Number of words seached in a day')
+plt.xlabel('Indvidual User')
+plt.ylabel('Max Number of words seached in a day')
 plt.show()

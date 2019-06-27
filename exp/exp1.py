@@ -85,7 +85,7 @@ def getSimilarityScore(user_words,tmp_words,userid):
 	occurrence = [x for x in eff_user_words if x in eff_tmp_words]
 	return len(occurrence) / len(user_words)
 
-def findNeighbourhood(current_userid,list_words,context_users,k=10):
+def findNeighbourhood(current_userid,list_words,context_users,neigh_size=10):
 	rank = []
 	# print (context_users[3320])
 	for userid,info in context_users.items():
@@ -94,7 +94,7 @@ def findNeighbourhood(current_userid,list_words,context_users,k=10):
 			rank.append([userid,tmpScore])
 
 	rank.sort(key=lambda x:x[1],reverse=True)
-	rank = rank[:k]
+	rank = rank[:neigh_size]
 	return rank
 
 def findRecommendationFromNeigh(num_reccom,user_words,neigh,context_users):
