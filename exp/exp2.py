@@ -45,14 +45,13 @@ def findTempSimilarities(words_feat,context_users_day,neigh_size):
 		tmp_best_day = 0
 		tmp_best_search = []
 		for aDay,aDaySearch in search:
-			if len(aDaySearch) < len(words_feat)/2:
-				tmp_words = aDaySearch
-				user_words = words_feat
-				ts = getSimilarityScore(user_words,tmp_words,userid)
-				if ts > tmp_best_score:
-					tmp_best_score = ts
-					tmp_best_day = aDay
-					tmp_best_search = aDaySearch
+			tmp_words = aDaySearch
+			user_words = words_feat
+			ts = getSimilarityScore(user_words,tmp_words,userid)
+			if ts > tmp_best_score:
+				tmp_best_score = ts
+				tmp_best_day = aDay
+				tmp_best_search = aDaySearch
 
 		rank.append([userid,tmp_best_score,tmp_best_day,tmp_best_search])
 
@@ -65,14 +64,12 @@ def findTempSimilarities(words_feat,context_users_day,neigh_size):
 def getUserSearchedWords(aUser,aDay):
 	words = []
 	for item in aUser:
-		# print(item)
-		# print (aUser,aDay)
 		if item[1] < aDay:
 			words.append(item)
 	return words
 
 def oneFoldShortTermExp(fold_id,folds,num_words_feat,num_words_predict,neigh_size,users,users_day):
-	stack = []
+	result_stack = []
 	context_users = {**users}
 	context_users_day = {**users_day}
 
@@ -82,11 +79,12 @@ def oneFoldShortTermExp(fold_id,folds,num_words_feat,num_words_predict,neigh_siz
 	for target_id in uids_in_exam:
 		del context_users_day[target_id]
 	
-	# make predict words and ground words
+	# make word feature and ground words
 	for user_log in folds[fold_id]:
 		uid = user_log[0]
 		day = user_log[1]
 		uwords = user_log[2]
+
 		words_feat = uwords[:num_words_feat]
 		words_ground_predict = uwords[num_words_feat:]
 
@@ -98,17 +96,15 @@ def oneFoldShortTermExp(fold_id,folds,num_words_feat,num_words_predict,neigh_siz
 		# score prediction
 		if len(predicted_words)==0: # if cannot be predicted 
 			continue
-			
 
 		precision = predictionMatchingScore(uid,predicted_words,words_ground_predict)
-		precision = (precision*len(predicted_words)/len(words_ground_predict))
-		print(precision*len(predicted_words)/len(words_ground_predict),precision*len(predicted_words),len(predicted_words),len(words_ground_predict))
-		if precision == 0:
-			print(predicted_words)
-			print(words_ground_predict)
-		stack.append(precision)
+		print(precision)
+		# precision = (precision*len(predicted_words)/len(words_ground_predict)) # less strict metric
 
-	return statistics.mean(stack)
+		# print(precision,len(predicted_words),len(words_ground_predict))
+		result_stack.append(precision)
+
+	return statistics.mean(result_stack)
 
 def findInRangeDaySearch(threshold_up,threshold_down,aList):
 	for item in aList:
@@ -123,31 +119,30 @@ def main(args):
 
 	# parameters
 	random.seed(100)
-	num_sample = 800
-	# ----
-	# month_threshold = 2
-	# month_train = month_threshold/2
 
-	number_of_folds = 5
-	num_words_predict = 100
-	num_words_feat = 10
-	neigh_size = 100
 	# ----
+	num_sample = 800 # for CV
+	number_of_folds = 5
+	num_words_predict = 10
+	num_words_feat = 10
+	neigh_size = 10
+	# - - -
+
 	start_time = time.time()
 
 	root_arr = os.path.realpath(__file__).split('/')[:-2]
 	datadir = '/'.join(root_arr+['data']) 
-
 	filetoread= datadir+'/out2.csv'
+	# filetoread= datadir+'/out_ipbased.csv'
 	
 	users = loadSQL2(filetoread)
-	# print("--- loaded in %s seconds ---" % (time.time() - start_time))
+	print("--- loaded in %s seconds ---" % (time.time() - start_time))
 	
 	user_dialy = []
 	dataset = []
 
 
-	# Re-structure user info by day
+	# re-structure user info by day
 	# ---
 	users_day = {}
 	for userid,search in users.items():
@@ -159,7 +154,7 @@ def main(args):
 			dbid = anItem[3]
 			word_info = [w,dbid]
 			user_seach_day[day] =  [word_info] if day not in user_seach_day else user_seach_day[day] + [word_info]
-		usersdayInList = list(user_seach_day.items())
+		usersdayInList = list(user_seach_day.items()) # a stack mode
 		usersdayInList.sort(key=lambda x:len(x[1]),reverse=True)
 		users_day[userid] = usersdayInList
 
@@ -174,24 +169,22 @@ def main(args):
 			wordset.sort(key=lambda x:x[1])
 			dataset.append([userid,foundDay[0],wordset])
 
-
-
 	print("The dataset has been prepared ...")
-	# print(len(dataset),len(dataset[0][2]))
+
 	total_inst = random.sample(dataset, num_sample)
 	folds = partition_shuffle(total_inst,5)	
 
 	avgs = []
 	i = int(args[0])
 	test_ids = folds[i]
-	# print(test_ids[0])
+
 	avg = oneFoldShortTermExp(i,folds,num_words_feat,num_words_predict,neigh_size,users,users_day)
 	print(avg)
-	# avg = oneFoldShortTermExp(test_ids,users,month_threshold,month_train,num_reccom)
+
 	# avgs.append(avg)
 
-	
-	sys.exit()
+	print("--- Completed in %s seconds ---" % (time.time() - start_time))
+
 
 
 
