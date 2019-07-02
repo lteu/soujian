@@ -129,7 +129,11 @@ def predictionMatchingScore(userid,recommended,user_ground):
 	words_guessed = [x for x in words_rec if x in words_grd]
 	if len(words_rec) == 0:
 		sys.exit('0 recommendation occured for user with ID '+ str(userid))
-	precision = len(words_guessed)/len(words_rec)
+	# precision = len(words_guessed)/len(words_rec)
+	
+	# comparison with QCER
+	precision = len(words_guessed)/len(words_grd)
+
 	return precision
 	# print (precision)
 
