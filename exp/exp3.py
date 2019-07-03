@@ -71,7 +71,8 @@ def findLevelByComparingWords(info,livelli):
 def calCoverage(listSuggested,user_ground):
 	u_g_list = set([x[0] for x in user_ground])
 	sel = [x for x in listSuggested if x in u_g_list]
-	percentage = len(sel)/len(u_g_list)
+	com_divisor =min(len(u_g_list),len(listSuggested))
+	percentage = len(sel)/com_divisor
 	return percentage
 	# print(percentage)
 

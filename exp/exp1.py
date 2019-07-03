@@ -132,7 +132,8 @@ def predictionMatchingScore(userid,recommended,user_ground):
 	# precision = len(words_guessed)/len(words_rec)
 	
 	# comparison with QCER
-	precision = len(words_guessed)/len(words_grd)
+	com_divisor = min(len(words_grd),len(recommended))
+	precision = len(words_guessed)/com_divisor
 
 	return precision
 	# print (precision)
