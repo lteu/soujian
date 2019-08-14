@@ -138,7 +138,7 @@ def predictionMatchingScore(userid,recommended,user_ground):
 	return precision
 	# print (precision)
 
-def predictWords(test_instances,test_ground,context_users,num_reccom):
+def predictWords(test_instances,test_ground,context_users,num_reccom, ifPrint):
 	stack = []
 	for userid,info in test_instances.items():
 
@@ -149,6 +149,9 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 		
 		recommended = findRecommendationFromNeigh(num_reccom,info,neigh,context_users)
 		
+		if ifPrint:
+			print(recommended)
+
 		if len(recommended)==0: # if cannot be predicted 
 			continue
 			
@@ -163,7 +166,7 @@ def predictWords(test_instances,test_ground,context_users,num_reccom):
 	return stack
 
 
-def oneFoldExp(test_ids,full_users,month_threshold,month_train,num_reccom):
+def oneFoldExp(test_ids,full_users,month_threshold,month_train,num_reccom,inspect=''):
 	context_users = {**full_users}
 	target_users = {}
 
@@ -175,8 +178,17 @@ def oneFoldExp(test_ids,full_users,month_threshold,month_train,num_reccom):
 	# secondly, extract test user info
 
 	test_instances,test_ground = extTestUsersInfo(target_users,month_train)
-	stack = predictWords(test_instances,test_ground,context_users,num_reccom)
 
+	# inspection
+	ifPrint=False
+	if inspect != '':
+		content = test_instances[inspect]
+		test_instances =  {inspect:content}
+		content = test_ground[inspect]
+		test_ground = {inspect:content}
+		ifPrint=True
+	stack = predictWords(test_instances,test_ground,context_users,num_reccom,ifPrint=ifPrint)
+	# print(stack)
 	return statistics.mean(stack)
 
 def main(args):
@@ -218,7 +230,9 @@ def main(args):
 
 	i = int(args[0])
 	test_ids = partitioned[i]
-	avg = oneFoldExp(test_ids,users,month_threshold,month_train,num_reccom)
+
+	avg = oneFoldExp(test_ids,users,month_threshold,month_train,num_reccom,inspect='825')
+	# avg = oneFoldExp(test_ids,users,month_threshold,month_train,num_reccom)
 	
 	avgs.append(avg)
 

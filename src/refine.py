@@ -76,6 +76,8 @@ def main(args):
 	for userinfo in usersInList:
 		row = ''
 		userid = userinfo[0]
+		# if userid == '825':
+		# 	sys.exit('found')
 		words = userinfo[1]
 		for w in words:
 			writer.writerow([str(userid),str(w[0]),str(w[1]),str(w[2]),str(w[3])])
